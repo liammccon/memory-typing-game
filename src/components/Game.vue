@@ -47,6 +47,8 @@
 
 <script>
 import ProgressBar from "./ProgressBar.vue"
+import FileReader from "../FileReader"
+
 
 export default {
     name: 'Tutorial',
@@ -74,6 +76,10 @@ export default {
     methods: {
         //Stages
         async start(){
+            //Todo delete
+            this.getWordsArray()
+            //
+
             console.log("starting game")
             this.currentStage = this.stages.getReady 
             this.textToType = this.getTextToType()
@@ -121,7 +127,9 @@ export default {
         startLoseStage() {
             this.currentStage = this.stages.lose
         },
+        startOver(){
 
+        },
         startNewRound(){
             //Todo
             //update fields
@@ -132,6 +140,12 @@ export default {
         getTextToType(){
             //TODO
             return "apple pie milkshake"
+        },
+        async makeRandomWordsString(num){
+            //console.log(this.getWordsArray())
+        },
+        async getWordsArray(){
+            return FileReader.getWordsArray()
         }
     }      
 }
