@@ -23,6 +23,21 @@
                 <ProgressBar @done="verifyInput" :timerSeconds="typeSecs" ref="progressBar"/>
             </div>
 
+            <!--Win stage-->
+            <div v-if="(currentStage === stages.win)">
+                <h2 class="mb-3 display-5">Correct!</h2>
+                <p>Ready for more?</p>
+                <button class="btn btn-light" @click="startNewRound">Begin!</button>
+            </div>
+
+            <!--Lose stage-->
+            <div v-if="(currentStage === stages.lose)">
+                <h2 class="mb-3 display-5">So close!</h2>
+                <p>You got to round: {{round}}</p>
+                <p>Try again?</p>
+                <button class="btn btn-light" @click="startOver">Start over!</button>
+            </div>
+
         </div>
         
 
@@ -49,7 +64,7 @@ export default {
             },
             currentStage: "GET_READY",
             round: 1,
-            numOfWords: 1, //TODO REFACTOR into time to complete each word, calculate time remaining
+            numOfWords: 1, //TODO REFACTOR to have var timeMsPerTenChars, decreases, timeToComplete gets calculated
             getReadyTimeSecs: 2,
             rememberSecs: 4,
             typeSecs: 4,
@@ -95,10 +110,22 @@ export default {
             //Todo
             console.log(isCorrect)
             if (isCorrect){
-                //this.startWinStage()
+                this.startWinStage()
             } else {
-                //this.startLoseStage()
+                this.startLoseStage()
             }
+        },
+        startWinStage(){
+            this.currentStage = this.stages.win
+        },
+        startLoseStage() {
+            this.currentStage = this.stages.lose
+        },
+
+        startNewRound(){
+            //Todo
+            //update fields
+            //start round
         },
 
         //Helper methods
