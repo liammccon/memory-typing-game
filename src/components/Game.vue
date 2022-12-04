@@ -6,21 +6,21 @@
             <!--Get Ready Stage-->
             <div v-if="(currentStage === stages.getReady)"  >
                 <h2 class="mb-3 display-5">Get ready!</h2>
-                <ProgressBar @done="startRememberPhase" :timerSeconds="getReadyTimeSecs" ref="progressBar"/>
+                <ProgressBar @done="startRememberPhase" :timerMs="getReadyMs" ref="progressBar"/>
             </div>
 
             <!--Remember stage-->
             <div v-if="(currentStage === stages.remember)">
                 <h2 class="mb-3 display-5">Remember the following:</h2>
                 <input class="form-control ltm-input bg-dark mb-3" type="text" :placeholder="textToType" aria-label="Disabled input" disabled>
-                <ProgressBar @done="startTypePhase" :timerSeconds="rememberSecs" ref="progressBar"/>
+                <ProgressBar @done="startTypePhase" :timerMs="rememberMs" ref="progressBar"/>
             </div>
 
             <!--Type stage-->
             <div v-if="(currentStage === stages.type)">
                 <h2 class="mb-3 display-5">Now type it:</h2>
                 <input id="type-input" class="form-control ltm-input bg-dark mb-3" type="text" placeholder="type it out!" aria-label="input" autofocus>
-                <ProgressBar @done="verifyInput" :timerSeconds="typeSecs" ref="progressBar"/>
+                <ProgressBar @done="verifyInput" :timerMs="typeMs" ref="progressBar"/>
             </div>
 
             <!--Win stage-->
@@ -67,10 +67,11 @@ export default {
             },
             currentStage: "GET_READY",
             round: 1,
-            numOfWords: 1, //TODO REFACTOR to have var timeMsPerTenChars, decreases, timeToComplete gets calculated
-            getReadyTimeSecs: 2,
-            rememberSecs: 4,
-            typeSecs: 4,
+            numOfWords: Number, 
+            timeMsPerChar: Number,
+            getReadyMs: 3000,
+            rememberMs: Number,
+            typeMs: Number,
             enteredText: String,
             textToType: String
         }
@@ -78,13 +79,14 @@ export default {
     methods: {
         //Stages
         async start(){
-            //Todo delete
-            console.log(CommonWords.getRandomWordsAsString(4))
-            //
+            this.initializeFields()
 
-            console.log("starting game")
             this.currentStage = this.stages.getReady 
-            this.textToType = this.getTextToType()
+            this.startProgressBar()
+        },
+        async startNewRound(){
+            this.updateFieldsForNextRound()
+            this.currentStage = this.stages.getReady 
             this.startProgressBar()
         },
         async startRememberPhase(){
@@ -139,7 +141,27 @@ export default {
             //start round
         },
 
-        //Helper methods
+        //Setting fields and timers
+        initializeFields(){
+            this.numOfWords = 1
+            this.timeMsPerChar = 500
+            this.textToType = this.getTextToType()
+
+            this.calculateTimers()
+        },
+        calculateTimers(){
+            let textLength = this.textToType.length
+            this.rememberMs = textLength * this.timeMsPerChar
+            this.typeMs = textLength * this.timeMsPerChar
+        },
+
+        updateFieldsForNextRound(){
+            this.words++
+
+            const timePerCharMultiplier = 0.8
+            this.timeMsPerChar *= timePerCharMultiplier
+            this.calculateTimers()
+        },
         getTextToType(){
             //TODO
             return CommonWords.getRandomWordsAsString(this.numOfWords)

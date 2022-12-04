@@ -9,7 +9,7 @@
 export default {
   name: 'ProgressBar',
   props: {
-    timerSeconds: Number
+    timerMs: Number
   },
   methods: {
     start() {
@@ -17,8 +17,7 @@ export default {
         console.log('hi!')
 
         const updateIntervalMs = 10
-        const timerMs = this.timerSeconds * 1000
-        const totalIntervals = timerMs / updateIntervalMs 
+        const totalIntervals = this.timerMs / updateIntervalMs 
         var currentInterval = 0
         let percentDone = 0
         const done = () => this.$emit('done')
