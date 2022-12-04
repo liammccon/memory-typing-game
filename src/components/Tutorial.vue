@@ -1,9 +1,11 @@
 <template>
-    <div class="m-auto ltm-content text-start fs-5">
-        <div class="display-3">Tutorial</div>
-        <p>In this game, the player will be shown a string of random words to remember.</p>
-        <p>After a few seconds, the words will disapear and the player will have to type the words out by memory with a timer. If the player correctly types all words before the timer runs out, a new round begins, otherwise, they lose and must start over.</p> 
-        <p>Each round gets progressively harder. The number of words to remember increases, and the time to complete each one decreases.</p>
+    <div class="m-auto mx-4 ltm-content text-start fs-5">
+        <div class="display-3 mb-3">Tutorial</div>
+        <p>This game will put your short-term memory, spelling, and typing speed to the test!</p>
+        <p>Each round, you will be shown a string of words. After a few seconds, the words will disapear and you will have to type them
+             out by memory before the timer runs out. If you correctly types all words before the timer runs out, a new round begins, 
+             otherwise, you lose and must start over. The timer is calculated based on the length of the string of words.</p> 
+        <p>Each round gets progressively harder. The number of words to remember increases, and the time to complete it decreases.</p>
         <div class="text-center mt-5">
             <p>Ready to begin?</p>
             <button @click="$emit('start')" class="btn btn-light">Lets go!</button>
