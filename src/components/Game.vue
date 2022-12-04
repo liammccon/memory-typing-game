@@ -49,6 +49,7 @@ export default {
             },
             currentStage: "GET_READY",
             round: 1,
+            numOfWords: 1, //TODO REFACTOR into time to complete each word, calculate time remaining
             getReadyTimeSecs: 2,
             rememberSecs: 4,
             typeSecs: 4,
@@ -56,6 +57,7 @@ export default {
         }
     },
     methods: {
+        //Stages
         async start(){
             console.log("starting game")
             this.currentStage = this.stages.getReady 
@@ -89,14 +91,17 @@ export default {
             cleanInputString = cleanInputString.trim() //Remove extra space at the end
 
             let isCorrect = cleanInputString == this.textToType
+            
+            //Todo
+            console.log(isCorrect)
             if (isCorrect){
-                this.startWinStage()
+                //this.startWinStage()
             } else {
-                this.startLoseStage()
+                //this.startLoseStage()
             }
-
-
         },
+
+        //Helper methods
         getTextToType(){
             //TODO
             return "apple pie milkshake"
