@@ -47,7 +47,7 @@
 
 <script>
 import ProgressBar from "./ProgressBar.vue"
-import FileReader from "../FileReader"
+import CommonWords from "../CommonWords"
 
 
 export default {
@@ -77,7 +77,7 @@ export default {
         //Stages
         async start(){
             //Todo delete
-            this.getWordsArray()
+            console.log(CommonWords.getRandomWordsAsString(4))
             //
 
             console.log("starting game")
@@ -144,8 +144,8 @@ export default {
         async makeRandomWordsString(num){
             //console.log(this.getWordsArray())
         },
-        async getWordsArray(){
-            return FileReader.getWordsArray()
+        getWordsArray(){
+            console.log(CommonWords.getWordsArray()) 
         }
     }      
 }
