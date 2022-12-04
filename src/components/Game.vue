@@ -1,12 +1,12 @@
 <template>
     <div class="ltm-content container-fluid border border-light bg-dark rounded ">
+        <p v-if="(currentStage !== stages.getReady)" class="text-start mt-4 ms-4"><strong>Round: {{round}} </strong></p>
         <div class="text-center ltm-center w-100 p-5">
             <!--Content-->
             <div v-if="(currentStage === stages.getReady)"  >
                 <h2 class="mb-3">Get ready!</h2>
                 <ProgressBar @done="startRememberPhase" :timerSeconds="getReadyTimeSecs" ref="progressBar"/>
             </div>
-            <p v-if="(currentStage !== stages.getReady)" class="text-start mt-4 ms-4"><strong>Round: {{round}} </strong></p>
             <div v-if="(currentStage === stages.remember)">
             </div>
 

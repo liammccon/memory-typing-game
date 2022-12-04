@@ -18,14 +18,14 @@ export default {
 
         const updateIntervalMs = 10
         const timerMs = this.timerSeconds * 1000
-        const totalIntervals = timerMs / updateIntervalMs + 3 //Add a bit of time padding
+        const totalIntervals = timerMs / updateIntervalMs 
         var currentInterval = 0
         let percentDone = 0
         const done = () => this.$emit('done')
 
         var timer = setInterval(function(){
             currentInterval++
-            if (currentInterval >= totalIntervals){
+            if (currentInterval >= totalIntervals + 100){ //Add a second of time padding for delayed display
                 clearInterval(timer)
                 done()
             }
