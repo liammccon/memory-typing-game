@@ -33,6 +33,7 @@
             <!--Lose stage-->
             <div v-if="(currentStage === stages.lose)">
                 <h2 class="mb-3 display-5">So close!</h2>
+                <p>You typed "{{enteredText}}" but it was {{textToType}}""</p>
                 <p>You got to round: {{round}}</p>
                 <p>Try again?</p>
                 <button class="btn btn-light" @click="startOver">Start over!</button>
@@ -70,6 +71,7 @@ export default {
             getReadyTimeSecs: 2,
             rememberSecs: 4,
             typeSecs: 4,
+            enteredText: String,
             textToType: String
         }
     },
@@ -100,7 +102,7 @@ export default {
         },
         verifyInput(){
             const originalInput = $("#type-input").val()
-
+            
             //Clean the input string
             let cleanInputAsWordList = originalInput 
                 .toLowerCase()
@@ -110,6 +112,7 @@ export default {
 
             cleanInputAsWordList.forEach(word => cleanInputString+= (word + ' ')) //Re create the input string with spaces
             cleanInputString = cleanInputString.trim() //Remove extra space at the end
+            this.enteredText=cleanInputString
 
             let isCorrect = cleanInputString == this.textToType
             
@@ -139,14 +142,8 @@ export default {
         //Helper methods
         getTextToType(){
             //TODO
-            return "apple pie milkshake"
+            return CommonWords.getRandomWordsAsString(this.numOfWords)
         },
-        async makeRandomWordsString(num){
-            //console.log(this.getWordsArray())
-        },
-        getWordsArray(){
-            console.log(CommonWords.getWordsArray()) 
-        }
     }      
 }
 </script>
