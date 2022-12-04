@@ -19,21 +19,20 @@
             <!--Type stage-->
             <div v-if="(currentStage === stages.type)">
                 <h2 class="mb-3 display-5">Now type it:</h2>
-                <input id="type-input" class="form-control ltm-input bg-dark mb-3" type="text" placeholder="type it out!" aria-label="input" autofocus>
+                <input id="type-input" class="form-control ltm-input bg-dark mb-3" type="text" placeholder="type it out!" aria-label="input" >
                 <ProgressBar @done="verifyInput" :timerMs="typeMs" ref="progressBar"/>
             </div>
 
             <!--Win stage-->
             <div v-if="(currentStage === stages.win)">
                 <h2 class="mb-3 display-5">Correct!</h2>
-                <p>Ready for more?</p>
-                <button class="btn btn-light" @click="startNewRound">Begin!</button>
+                <button class="btn btn-light" @click="startNewRound">Next round</button>
             </div>
 
             <!--Lose stage-->
             <div v-if="(currentStage === stages.lose)">
                 <h2 class="mb-3 display-5">So close!</h2>
-                <p>You typed "{{enteredText}}" but it was {{textToType}}""</p>
+                <p>You typed "{{enteredText}}" but it was "{{textToType}}"</p>
                 <p>You got to round: {{round}}</p>
                 <p>Try again?</p>
                 <button class="btn btn-light" @click="startOver">Start over!</button>
@@ -69,7 +68,7 @@ export default {
             round: 1,
             numOfWords: Number, 
             timeMsPerChar: Number,
-            getReadyMs: 3000,
+            getReadyMs: 2000,
             rememberMs: Number,
             typeMs: Number,
             enteredText: String,
@@ -95,6 +94,10 @@ export default {
         },
         async startTypePhase(){
             this.currentStage = this.stages.type
+
+            const waitForDivLoadMs = 100 //Wait for ProgressBar to be created
+            await new Promise(resolve => setTimeout(resolve, waitForDivLoadMs));
+            $("#type-input").focus()
             this.startProgressBar()
         },
         async startProgressBar(){
@@ -133,18 +136,13 @@ export default {
             this.currentStage = this.stages.lose
         },
         startOver(){
-
-        },
-        startNewRound(){
-            //Todo
-            //update fields
-            //start round
+            this.start()
         },
 
         //Setting fields and timers
         initializeFields(){
             this.numOfWords = 1
-            this.timeMsPerChar = 500
+            this.timeMsPerChar = 400
             this.textToType = this.getTextToType()
 
             this.calculateTimers()
@@ -156,14 +154,15 @@ export default {
         },
 
         updateFieldsForNextRound(){
-            this.words++
+            this.round++ 
+            this.numOfWords++
 
             const timePerCharMultiplier = 0.8
             this.timeMsPerChar *= timePerCharMultiplier
+            this.textToType = this.getTextToType()
             this.calculateTimers()
         },
         getTextToType(){
-            //TODO
             return CommonWords.getRandomWordsAsString(this.numOfWords)
         },
     }      
