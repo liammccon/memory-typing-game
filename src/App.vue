@@ -1,19 +1,28 @@
 <template>
+  
   <!--App-->
-  <div class="container-fluid ltm-content bg-dark pt-5 pb-5 h-100 text-light">
-    <div class="ms-3 me-3">
-    <!--Tutorial-->
-    <div v-if="(currentStage === stages.tutorial)">
-          <Tutorial @start="start"/>
+  <div class="">
+    <img id="bg-image" class = "" src='./assets/wide-background-1.png' />
+    
+    <div class="container-fluid  pt-5 pb-5 h-100 text-light">
+      <div class="ms-3 me-3 ltm-content">
+      
+        <!--Tutorial-->
+        <div v-if="(currentStage === stages.tutorial)">
+            <Tutorial @start="start"/>
         </div>
 
-    <div v-if="(currentStage === stages.playing)" class="ltm-game">
-      <Game v-if="(currentStage === stages.playing)" ref="game"/>
-    </div>
-    </div>
-    
+        <!--Game-->
+        <div v-if="(currentStage === stages.playing)" class="ltm-game">
+          <Game v-if="(currentStage === stages.playing)" ref="game"/>
+        </div>
+      
+        <div class="ltm-spacer"></div>
 
+      </div>
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -58,17 +67,19 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  
+      
 }
 .ltm-content {
-  position: relative;
 }
 .ltm-game {
   
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+}
+.ltm-spacer{
+  height:10px;
+}
+#bg-image {
+  position: fixed;
+  z-index: -1;
+  filter: brightness(50%);
 }
 </style>
