@@ -191,7 +191,7 @@ export default {
 
             const timePerCharMultiplier = 0.8
             this.timeMsPerChar *= timePerCharMultiplier
-            this.getReadyMs = 1500 //Shorten the get ready time after one round
+            this.getReadyMs = 1000 //Shorten the get ready time after one round
             this.textToType = this.getTextToType()
             this.calculateTimers()
         },

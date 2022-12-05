@@ -23,7 +23,7 @@ export default {
 
         var timer = setInterval(function(){
             currentInterval++
-            if (currentInterval >= totalIntervals + 150){ //Add a second of time padding for delayed display
+            if (currentInterval >= totalIntervals + 100){ //Add a second of time padding for delayed display
                 clearInterval(timer)
                 done()
             }
