@@ -1,15 +1,17 @@
 <template>
   <!--App-->
-  <div class="container-fluid ltm-content bg-dark pt-5 h-100 text-light">
-
+  <div class="container-fluid ltm-content bg-dark pt-5 pb-5 h-100 text-light">
+    <div class="ms-3 me-3">
     <!--Tutorial-->
     <div v-if="(currentStage === stages.tutorial)">
-      <Tutorial @start="start"/>
-    </div>
+          <Tutorial @start="start"/>
+        </div>
 
     <div v-if="(currentStage === stages.playing)" class="ltm-game">
       <Game v-if="(currentStage === stages.playing)" ref="game"/>
     </div>
+    </div>
+    
 
   </div>
 </template>
@@ -43,7 +45,7 @@ export default {
       //Wait for Game to be created
       const waitForGameInitMs = 100
       await new Promise(resolve => setTimeout(resolve, waitForGameInitMs));
-      
+
       this.$refs.game.start() //Start the game timers
     }
   }
