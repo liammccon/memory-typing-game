@@ -1,10 +1,11 @@
 <template>
+    <div class="display-1 mb-3 text-center">Word Mash! </div>
     <div class="m-auto ltm-content text-start fs-5 py-3 px-3 border border-light rounded ">
-        <div class="display-3 mb-3">Tutorial</div>
-        <p>This game will put your short-term memory, spelling, and typing speed to the test!</p>
+        <div class="display-5 mb-3 text-center">Tutorial</div>
+        <h4 class="text-center">Word Mash will put your memory and typing to the test!</h4>
         <p>Each round, you will be shown a string of random words. After a few seconds, the words will disapear and you will have to type them
              out by memory before the timer runs out. If you correctly types all words before the timer runs out, a new round begins, 
-             otherwise, you lose and must start over. The timer is calculated based on the length of the string of words.</p> 
+             otherwise, you lose and must start over. The timer is calculated based on the total number of letters.</p> 
         <p>Each round gets progressively harder. The number of words to remember increases, and the time to complete it decreases.</p>
         <p>The text will be automatically submitted, no need to press 'Enter'</p>
         <div class="text-center mt-5 mb-5">
