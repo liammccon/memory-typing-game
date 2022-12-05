@@ -2,8 +2,10 @@
   
   <!--App-->
   <div class="">
-    <img id="bg-image" class = "" src='./assets/wide-background-1.png' />
+
+    <Background />
     
+
     <div class="container-fluid  pt-5 pb-5 h-100 text-light ltm-outer">
       <div class="ms-3 me-3 ltm-middle">
       
@@ -29,11 +31,13 @@
 <script>
 import Tutorial from './components/Tutorial.vue'
 import Game from './components/Game.vue'
+import Background from './components/Background.vue'
+
 
 export default {
   name: 'App',
   components: {
-    Tutorial, Game
+    Tutorial, Game, Background
   }, data(){
     return {
       stages: {
@@ -42,12 +46,15 @@ export default {
       },
       currentStage: String,
       round: 0,
-      highscore: 0
+      highscore: 0,
+      bgImgNumber: 0
       
     }
   },
   created(){
     this.currentStage = this.stages.tutorial
+    if (!this.bgImgNumber)
+      this.setBgImgNumber()
   },
   methods: {
     async start(){
@@ -61,6 +68,12 @@ export default {
     },
     updateHighscore(score){
       this.highscore = score > this.highscore ? score : this.highscore
+    },
+    setBgImgNumber(){
+      let max = 1
+      let imgNumber = Math.floor(Math.random() * max) + 1;
+      console.log(imgNumber)
+      return imgNumber
     }
   }
 }
@@ -79,8 +92,6 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
-  width: 100%;
 }
 
 .ltm-middle {
@@ -96,9 +107,6 @@ export default {
 .ltm-spacer{
   height:10px;
 }
-#bg-image {
-  position: fixed;
-  z-index: -1;
-  filter: brightness(50%);
-}
+
+
 </style>
