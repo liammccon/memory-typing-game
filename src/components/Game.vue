@@ -1,8 +1,10 @@
 <template>
-    <div class="ltm-content container-fluid border border-light bg-dark rounded ">
-        <p v-if="(currentStage !== stages.getReady)" class="text-center mt-5"><strong>Round: {{round}} </strong></p>
+    <div class="ltm-content container-fluid border border-light rounded ">
+        <p v-if="(currentStage === stages.getReady) 
+            || (currentStage === stages.remember) 
+            || (currentStage === stages.type)" class="text-center mt-5"><strong>Round: {{round}} </strong></p>
         <!--Content-->
-        <div class="text-center ltm-center w-100 p-5">
+        <div class="text-center ltm-center w-100 p-5 ">
             <!--Get Ready Stage-->
             <div v-if="(currentStage === stages.getReady)"  >
                 <h2 class="mb-3 display-5">Get ready!</h2>
@@ -15,11 +17,8 @@
             <div v-if="(currentStage === stages.remember)">
                 <h2 class="mb-3 display-5">Remember the following:</h2>
                 
-                <textarea id="remember-textarea" class="form-control ltm-input bg-dark mb-3" :placeholder="textToType" rows="1" disabled></textarea>
+                <textarea id="remember-textarea" class="form-control ltm-input monospace bg-dark mb-3" :placeholder="textToType" rows="1" disabled></textarea>
                 
-                <!--
-                <input class="form-control ltm-input bg-dark mb-3" type="text"  aria-label="Disabled input" disabled>
-                -->
                 <ProgressBar @done="startTypePhase" :timerMs="rememberMs" ref="progressBar"/>
             </div>
 
@@ -27,27 +26,25 @@
             <div v-if="(currentStage === stages.type)">
                 <h2 class="mb-3 display-5">Now type it:</h2>
                 
-                <textarea id="type-input" class="form-control ltm-input bg-dark mb-3" placeholder="type it out" rows="1" ></textarea>
+                <textarea id="type-input" class="form-control ltm-input monospace bg-dark mb-3" placeholder="type it out" rows="1" ></textarea>
 
-                <!--
-                <input id="type-input" class="form-control ltm-input bg-dark mb-3" type="text" placeholder="type it out!" aria-label="input" >
-                -->
                 <ProgressBar @done="verifyInput" :timerMs="typeMs" ref="progressBar"/>
             </div>
 
             <!--Win stage-->
             <div v-if="(currentStage === stages.win)">
                 <h2 class="mb-3 display-5">Correct!</h2>
-                <button class="btn btn-light" @click="startNewRound">Next round</button>
+                <button id="next-round-btn" class="btn btn-light" @click="startNewRound">Next round</button>
             </div>
 
             <!--Lose stage-->
             <div v-if="(currentStage === stages.lose)">
                 <h2 class="mb-3 display-5">So close!</h2>
-                <p>You typed "{{enteredText}}" but it was "{{textToType}}"</p>
-                <p>You got to round: {{round}}</p>
+                <p>You typed: <span class="monospace fw-bold">{{enteredText}}</span> </p>
+                <p>But it was: <span class="monospace fw-bold">{{textToType}}</span></p>
+                <p><strong>You passed {{(round-1)}} round{{(round - 1 != 1? "s" : "")}}</strong></p>
                 <p>Try again?</p>
-                <button class="btn btn-light" @click="startOver">Start over!</button>
+                <button id="start-over-btn" class="btn btn-light" @click="startOver">Start over!</button>
             </div>
 
         </div>
@@ -144,19 +141,30 @@ export default {
 
             let isCorrect = cleanInputString == this.textToType
             
-            //Todo
-            console.log(isCorrect)
             if (isCorrect){
                 this.startWinStage()
             } else {
                 this.startLoseStage()
             }
         },
-        startWinStage(){
+        async startWinStage(){
             this.currentStage = this.stages.win
+            this.$emit('score', this.round)
+
+            //Focus on the button
+            const waitForDivLoadMs = 100 //Wait for ProgressBar to be created
+            await new Promise(resolve => setTimeout(resolve, waitForDivLoadMs));
+            $('#next-round-btn').focus()
         },
-        startLoseStage() {
+        async startLoseStage() {
             this.currentStage = this.stages.lose
+
+            this.$emit('score', this.round - 1)
+
+            //Focus on the button
+            const waitForDivLoadMs = 100 //Wait for ProgressBar to be created
+            await new Promise(resolve => setTimeout(resolve, waitForDivLoadMs));
+            $('#start-over-btn').focus()
         },
         startOver(){
             this.start()
@@ -165,6 +173,7 @@ export default {
         //Setting fields and timers
         initializeFields(){
             this.numOfWords = 1
+            this.round = 1
             this.timeMsPerChar = 400
             this.textToType = this.getTextToType()
 
@@ -199,6 +208,7 @@ export default {
     max-width: 90vw; 
     min-height: 400px;
     position: relative;
+    background-color: rgb(33, 37, 41, .7);
 }
 .ltm-center{
     margin: 0;
@@ -210,12 +220,15 @@ export default {
 }
 .ltm-input {
     font-size:larger;
-    font-family:'Courier New', Courier, monospace;
     font-weight:bold;
     color: white;
 }
 
 ::placeholder {
     color: rgb(235, 235, 235);
+}
+
+.monospace{
+    font-family:'Courier New', Courier, monospace; 
 }
 </style>

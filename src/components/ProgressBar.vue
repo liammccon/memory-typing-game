@@ -14,7 +14,6 @@ export default {
   methods: {
     start() {
         $('#progress-bar').attr('aria-valuenow', 0).css('width', 0+'%')
-        console.log('hi!')
 
         const updateIntervalMs = 10
         const totalIntervals = this.timerMs / updateIntervalMs 
