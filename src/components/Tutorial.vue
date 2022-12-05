@@ -1,5 +1,5 @@
 <template>
-    <div class="m-auto mx-4 ltm-content text-start fs-5">
+    <div class="m-auto ltm-content text-start fs-5">
         <div class="display-3 mb-3">Tutorial</div>
         <p>This game will put your short-term memory, spelling, and typing speed to the test!</p>
         <p>Each round, you will be shown a string of words. After a few seconds, the words will disapear and you will have to type them

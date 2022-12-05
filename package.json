@@ -8,6 +8,7 @@
     "deploy": "sh deploy.sh"
   },
   "dependencies": {
+    "autosize": "^5.0.2",
     "core-js": "^3.8.3",
     "vue": "^3.2.13"
   },

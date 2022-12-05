@@ -9,17 +9,29 @@
                 <ProgressBar @done="startRememberPhase" :timerMs="getReadyMs" ref="progressBar"/>
             </div>
 
+            <!--TODO CHANGE TO TEXTAREA FOR LATER STAGE-->
+
             <!--Remember stage-->
             <div v-if="(currentStage === stages.remember)">
                 <h2 class="mb-3 display-5">Remember the following:</h2>
-                <input class="form-control ltm-input bg-dark mb-3" type="text" :placeholder="textToType" aria-label="Disabled input" disabled>
+                
+                <textarea id="remember-textarea" class="form-control ltm-input bg-dark mb-3" :placeholder="textToType" rows="1" disabled></textarea>
+                
+                <!--
+                <input class="form-control ltm-input bg-dark mb-3" type="text"  aria-label="Disabled input" disabled>
+                -->
                 <ProgressBar @done="startTypePhase" :timerMs="rememberMs" ref="progressBar"/>
             </div>
 
             <!--Type stage-->
             <div v-if="(currentStage === stages.type)">
                 <h2 class="mb-3 display-5">Now type it:</h2>
+                
+                <textarea id="type-input" class="form-control ltm-input bg-dark mb-3" placeholder="type it out" rows="1" ></textarea>
+
+                <!--
                 <input id="type-input" class="form-control ltm-input bg-dark mb-3" type="text" placeholder="type it out!" aria-label="input" >
+                -->
                 <ProgressBar @done="verifyInput" :timerMs="typeMs" ref="progressBar"/>
             </div>
 
@@ -48,6 +60,7 @@
 <script>
 import ProgressBar from "./ProgressBar.vue"
 import CommonWords from "../CommonWords"
+import autosize from 'autosize'
 
 
 export default {
@@ -90,6 +103,13 @@ export default {
         },
         async startRememberPhase(){
             this.currentStage = this.stages.remember
+
+            const waitForDivLoadMs = 100 //Wait for ProgressBar to be created
+            await new Promise(resolve => setTimeout(resolve, waitForDivLoadMs));
+            autosize($('#type-input'));
+
+
+            autosize($('#remember-textarea'));
             this.startProgressBar()
         },
         async startTypePhase(){
@@ -97,6 +117,8 @@ export default {
 
             const waitForDivLoadMs = 100 //Wait for ProgressBar to be created
             await new Promise(resolve => setTimeout(resolve, waitForDivLoadMs));
+            autosize($('#type-input'));
+
             $("#type-input").focus()
             this.startProgressBar()
         },
@@ -111,6 +133,7 @@ export default {
             //Clean the input string
             let cleanInputAsWordList = originalInput 
                 .toLowerCase()
+                .replace(/\n/g, " ") //Replace any new lines with a space
                 .split(' ') //Separate by spaces
                 .filter(word => Boolean(word)) //removes extra spaces
             let cleanInputString = ''
